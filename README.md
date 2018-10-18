@@ -45,5 +45,5 @@ To intall eslint:
     ```
 
 ### Misc info
- - The fornt end is hosted  on firebase and is continuously integrated using travis ci meaning that when you push on the master brach or you merge a pull request with the master brench the latest version gets deployed to firebase at cobra.tk
+ - The front end is hosted  on firebase and is continuously integrated using travis ci meaning that when you push on the master brach or you merge a pull request with the master brench the latest version gets deployed to firebase at cobra.tk
 <img src="bonus.png" alt="bonus" width="250"/>
