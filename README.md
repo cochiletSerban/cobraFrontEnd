@@ -1,4 +1,4 @@
-### $ Cobra game Front End $
+### <img src="cobra.png" alt="bonus" width="20"/> Cobra game Front End <img src="cobra.png" alt="bonus" width="20"/>
 
   - Cel mai jmecher card game
   - production version is avaible at cobra.tk
