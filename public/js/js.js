@@ -10,8 +10,7 @@ $(document).ready(() => {
   socket.emit('playerHasJoindGame', { pula: 'mare' })
 
   socket.on('lobbyFull', (data) => {
-    console.log("yes");
-    
+    console.log('yes')
     welcomeText.text('player 2 has joined the lobby')
   })
 })
