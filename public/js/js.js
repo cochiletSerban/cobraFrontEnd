@@ -3,39 +3,15 @@
 var socket = io.connect('https://cobras.herokuapp.com/')
 
 // used for local development , uncommetn for local dev
-// var socket = io.connect('http://localhost:3000/')
+//var socket = io.connect('http://localhost:3000/')
 
 $(document).ready(() => {
-  // event on send
-  var msg = $('#message')
-  var handle = $('#handle')
-  var btn = $('#send')
-  var out = $('#output')
-  var feed = $('#feedback')
+  let welcomeText = $('#lobby-container > p')
+  socket.emit('playerHasJoindGame', { pula: 'mare' })
 
-  btn.click(() => {
-    socket.emit('chatMsg', {
-      message: msg.val(),
-      handle: handle.val()
-    })
-  })
-
-  msg.keydown(() => {
-    socket.emit('typing', {
-      name: handle.val()
-    })
-  })
-
-  socket.on('chatMsg', (data) => {
-    feed.html('')
-    out.append('<p><strong>' + data.handle + ': </strong>' +
-    data.message + '</p>')
-  })
-
-  socket.on('typing', (data) => {
-    feed.html('<p><em>' + data.name + ' is typing a message...</em></p>')
-    setTimeout(() => {
-      feed.html('')
-    }, 1000)
+  socket.on('lobbyFull', (data) => {
+    console.log("yes");
+    
+    welcomeText.text('player 2 has joined the lobby')
   })
 })
