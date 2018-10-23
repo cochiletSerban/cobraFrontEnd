@@ -15,14 +15,25 @@ function appendElmentsTo (appendTo, listOfElements) {
 
 function cardSelected (card) {
   selectedCards.push(cardList[$(card).attr('alt')])
-  $(card).css('opacity', '1')
+  $(card).css({ 'background-color': 'rgba(0,0,0,0.6)', 'border': '2px solid greenyellow', 'box-shadow': '0px 0px 18px  greenyellow' })
   console.log(selectedCards)
 }
 
 function makeCard (cardInfo, id) {
-  return `<div class="col-xs-12 col-md-3 bg card" alt="${id}" onclick="cardSelected(this)">
-              <h2>${cardInfo.name}</h2>
-              <img width="160" src="${cardInfo.picture}"/>
+  return `<div class="col-xs-6 col-md-3 col-lg-2 bg" >
+              <div class="card" alt="${id}" onclick="cardSelected(this)">
+                <h2>${cardInfo.name}</h2>
+                <hr>
+                <img width="140" src="${cardInfo.picture}"/>
+                <hr>
+                <br>
+                <div class="row">
+                  <div class="col-xs-3">${cardInfo.atack}</div>
+                  <div class="col-xs-3">country: ${cardInfo.nationality}</div>
+                  <div class="col-xs-3">club: ${cardInfo.team}</div>
+                  <div class="col-xs-3">${cardInfo.defence}</div>
+                </div>
+              </div>
           </div>`
 }
 
@@ -50,7 +61,8 @@ function getDomElements () {
       cardSelector: $('#cardSelector'),
       cards: $('#cardSelector > .row')
     },
-    lobby: $('#lobby')
+    lobby: $('#lobby'),
+    spinner: $('#spinner')
   }
   return elements
 }
@@ -83,6 +95,7 @@ $(document).ready(() => {
   socket.on('lobbyFull', (cards) => {
     cardList = cards
     renderCardSelector(domElemets)
+    hideElement(domElemets.spinner)
     domElemets.welcomeText.text('All the players are now in the room')
     moveToCardSelection(domElemets)
   })
