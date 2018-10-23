@@ -1,9 +1,9 @@
 // make socket connection to geroku backend used for poduction ( when pushing to master)
 // comment this line for local development ( if you are runnig the back end locally )
-//var socket = io.connect('https://cobras.herokuapp.com/')
+var socket = io.connect('https://cobras.herokuapp.com/')
 
 // used for local development , uncommetn for local dev
-var socket = io.connect('http://localhost:3000/')
+//var socket = io.connect('http://localhost:3000/')
 
 function getDomElements () {
   let elements = {
