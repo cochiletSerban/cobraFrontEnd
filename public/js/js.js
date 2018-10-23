@@ -4,6 +4,8 @@
 
 // used for local development , uncommetn for local dev
 const socket = io.connect('http://localhost:3000/')
+var selectedCards = []
+var cardList = []
 
 function appendElmentsTo (appendTo, listOfElements) {
   for (let elem of listOfElements) {
@@ -11,16 +13,32 @@ function appendElmentsTo (appendTo, listOfElements) {
   }
 }
 
-function makeCards (cardList) {
+function cardSelected (card) {
+  selectedCards.push(cardList[$(card).attr('alt')])
+  $(card).css('opacity', '1')
+  console.log(selectedCards)
+}
+
+function makeCard (cardInfo, id) {
+  return `<div class="col-xs-12 col-md-3 bg card" alt="${id}" onclick="cardSelected(this)">
+              <h2>${cardInfo.name}</h2>
+              <img width="160" src="${cardInfo.picture}"/>
+          </div>`
+}
+
+function makeCards () {
   let cards = []
+  let id = 0
   for (let card of cardList) {
-    cards.push(`<div class="col-xs-12 col-md-3 bg">${card.name}</div>`)
+    cards.push(makeCard(card, id))
+    id++
   }
   return cards
 }
 
-function renderCardSelector (domElemets, cardList) {
-  let appendTo = domElemets.cardSelector.cardSelector.cards
+function renderCardSelector (domElemets) {
+  let appendTo = domElemets.cardSelector.cards
+  console.log(appendTo)
   appendElmentsTo(appendTo, makeCards(cardList))
 }
 
@@ -63,7 +81,8 @@ $(document).ready(() => {
   })
 
   socket.on('lobbyFull', (cards) => {
-    renderCardSelector(domElemets, cards)
+    cardList = cards
+    renderCardSelector(domElemets)
     domElemets.welcomeText.text('All the players are now in the room')
     moveToCardSelection(domElemets)
   })

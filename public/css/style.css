@@ -25,3 +25,7 @@ body {
 .bg {
     border:2px solid red;
 }
+
+.card {
+    opacity: 0.7;
+}
