@@ -13,8 +13,16 @@ body {
     box-shadow: 0px 4px 2px 0px black;
 }
 
-#lobby-container {
+.container {
     margin: 0 auto;
     width:80%;
     padding: 2%;
+}
+
+#cardSelector {
+    display:none;
+}
+
+#showCardSelector {
+    display: none;
 }
