@@ -38,11 +38,19 @@ body {
     border-radius: 5%;
     max-width:250px;
     box-shadow: 0px 3px 0px greenyellow;
+    opacity: 0.8;
+    cursor: pointer;
+}
+.card:hover {
+    opacity: 1;
+    border:2px solid greenyellow;
+    transform: scale(1.04,1.04);
 }
 
 .card > img {
     opacity: 0.9;
 }
+
 
 hr {
     height: 3px;

@@ -15,7 +15,7 @@ function appendElmentsTo (appendTo, listOfElements) {
 
 function cardSelected (card) {
   selectedCards.push(cardList[$(card).attr('alt')])
-  $(card).css({ 'background-color': 'rgba(0,0,0,0.6)', 'border': '2px solid greenyellow', 'box-shadow': '0px 0px 18px  greenyellow' })
+  $(card).css({ 'background-color': 'rgba(0,0,0,0.6)', 'border': '2px solid greenyellow', 'box-shadow': '0px 0px 18px  greenyellow', 'opacity': '1', 'transform': 'scale(1.04,1.04)' })
   console.log(selectedCards)
 }
 
