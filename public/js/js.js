@@ -1,39 +1,46 @@
 // make socket connection to geroku backend used for poduction ( when pushing to master)
 // comment this line for local development ( if you are runnig the back end locally )
- var socket = io.connect('https://cobras.herokuapp.com/')
+// var socket = io.connect('https://cobras.herokuapp.com/')
 
 // used for local development , uncommetn for local dev
-//const socket = io.connect('http://localhost:3000/')
+const socket = io.connect('http://localhost:3000/')
 var selectedCards = []
 var cardList = []
-
+let myId = ''
 function appendElmentsTo (appendTo, listOfElements) {
   for (let elem of listOfElements) {
     $(appendTo).append(elem)
   }
 }
 
-function cardSelected (card) {
-  selectedCards.push(cardList[$(card).attr('alt')])
-  $(card).css({ 'background-color': 'rgba(0,0,0,0.6)', 'border': '2px solid greenyellow', 'box-shadow': '0px 0px 18px  greenyellow', 'opacity': '1', 'transform': 'scale(1.04,1.04)' })
-  console.log(selectedCards)
-}
-
 function makeCard (cardInfo, id) {
-  return `<div class="col-xs-6 col-md-3 col-lg-2 bg" >
-              <div class="card" alt="${id}" onclick="cardSelected(this)">
+  return `<div class="col-xs-6 col-md-3 col-lg-2 bg">
+            <div class="card" alt="${id}">
                 <h2>${cardInfo.name}</h2>
-                <hr>
-                <img width="140" src="${cardInfo.picture}"/>
+                <img width="140" height="140" src="${cardInfo.picture}" />
                 <hr>
                 <br>
                 <div class="row">
-                  <div class="col-xs-3">${cardInfo.atack}</div>
-                  <div class="col-xs-3">country: ${cardInfo.nationality}</div>
-                  <div class="col-xs-3">club: ${cardInfo.team}</div>
-                  <div class="col-xs-3">${cardInfo.defence}</div>
+                    <div class="col-xs-6">
+                        <h3>${cardInfo.nationality} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h3>
+                    </div>
+                    <div class="col-xs-6">
+                        <h3>${cardInfo.team}</h3>
+                    </div>
                 </div>
-              </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="atack">
+                            <h2 class="bold">A ${cardInfo.atack}</h2>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="defence">
+                            <h2 class="bold">D ${cardInfo.defence}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>`
 }
 
@@ -55,14 +62,17 @@ function renderCardSelector (domElemets) {
 
 function getDomElements () {
   let elements = {
-    welcomeText: $('#lobby > p'),
+    welcomeText: $('#lobby > h3'),
     showCardSelectorButton: $('#showCardSelector'),
     cardSelector: {
       cardSelector: $('#cardSelector'),
-      cards: $('#cardSelector > .row')
+      cards: $('#cardSelector > .row'),
+      headerText: $('#headerText'),
+      header: $('#cardSelector > div:first-child')
     },
     lobby: $('#lobby'),
-    spinner: $('#spinner')
+    spinner: $('#spinner'),
+    anyCard: $('.card')
   }
   return elements
 }
@@ -70,7 +80,6 @@ function getDomElements () {
 function hideElement (element) {
   element.hide()
 }
-
 function showElement (element) {
   element.show()
 }
@@ -83,11 +92,52 @@ function moveToCardSelection (domElemets) {
   })
 }
 
+function toggleSubmitCardsButton (domElemets, toggle) {
+  if (toggle) {
+    domElemets.cardSelector.headerText.text('Submit your choise')
+    domElemets.cardSelector.header.addClass('card-click')
+  } else {
+    domElemets.cardSelector.headerText.text('Select your cards')
+    domElemets.cardSelector.header.removeClass('card-click')
+  }
+
+}
+
+function selectCards (domElemets) {
+  $('.card').click(function () {
+    if (!selectedCards.includes(cardList[$(this).attr('alt')])) {
+      selectedCards.push(cardList[$(this).attr('alt')])
+      $(this).addClass('card-click')
+    } else {
+      selectedCards = selectedCards.filter(e => e !== cardList[$(this).attr('alt')])
+      $(this).removeClass('card-click')
+    }
+    toggleSubmitCardsButton(domElemets, selectedCards.length > 0)
+  })
+}
+
+function sendCardsToServer (domElemets, socket) {
+  domElemets.cardSelector.header.click(function () {
+    if (selectedCards.length == 11) {
+      alert('good')
+      socket.emit('cardSelect', selectedCards)
+    } else if (selectedCards.length > 11) {
+      alert('you selected to many cards')
+    } else {
+      alert('you didnt select enugh cards')
+    }
+  })
+}
+
 $(document).ready(() => {
   let domElemets = getDomElements()
+
   socket.on('connect', () => {
     console.log('connected')
+    myId = socket.io.engine.id
+    console.log(myId)
   })
+
   socket.on('disconnect', () => {
     alert('to many players')
   })
@@ -98,5 +148,8 @@ $(document).ready(() => {
     hideElement(domElemets.spinner)
     domElemets.welcomeText.text('All the players are now in the room')
     moveToCardSelection(domElemets)
+    selectCards(domElemets)
+    sendCardsToServer(domElemets, socket)
   })
+
 })
