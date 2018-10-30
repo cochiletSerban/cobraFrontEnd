@@ -142,3 +142,11 @@ button:hover {
     display: none;
 }
 
+@font-face {
+    font-family: myFirstFont;
+    src: url(../assets/coolvetica.ttf);
+}
+
+h.coolvetica {
+    font-family: myFirstFont;
+}
