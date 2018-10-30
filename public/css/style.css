@@ -68,15 +68,12 @@ body {
 }
 
 .atack {
-    color:#D50000;
-    background-color:rgba(0,0,0, 0.7);
-    border-radius: 100%;
-    display: block;
-    max-width: 50px;
-    min-height: 50px;
-    line-height: 50px;
-    margin-top: -10px;
-    text-align: center;
+	margin: 50px auto;
+	text-align: center;
+	text-shadow: -1px -1px 0px rgba(255,255,255,0.3), 1px 1px 0px rgba(0,0,0,0.8);
+	color: #333;
+	opacity: 0.4;
+	font: 700 80px 'Bitter';
 }
 
 .defence {
