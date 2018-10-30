@@ -25,7 +25,7 @@ function makeCard (cardInfo, id) {
                         <h3><img width="52" height="31" src="${cardInfo.nationality}" /></h3>
                     </div>
                     <div class="col-xs-6">
-                        <h3><img src="${cardInfo.team}" /></h3>
+                        <h3><img width="52" height="31" src="${cardInfo.team}" /></h3>
                     </div>
                 </div>
                 <div class="row">
