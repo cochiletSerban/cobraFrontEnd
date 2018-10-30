@@ -16,16 +16,16 @@ function appendElmentsTo (appendTo, listOfElements) {
 function makeCard (cardInfo, id) {
   return `<div class="col-xs-6 col-md-3 col-lg-2 bg">
             <div class="card" alt="${id}">
-                <h2>${cardInfo.name}</h2>
+                <h2 class="customfont">${cardInfo.name}</h2>
                 <img width="140" height="140" src="${cardInfo.picture}" />
                 <hr>
                 <br>
                 <div class="row">
                     <div class="col-xs-6">
-                        <h3>${cardInfo.nationality} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h3>
+                        <h3><img src="${cardInfo.nationality}" /></h3>
                     </div>
                     <div class="col-xs-6">
-                        <h3>${cardInfo.team}</h3>
+                        <h3><img src="${cardInfo.team}" /></h3>
                     </div>
                 </div>
                 <div class="row">
