@@ -16,7 +16,7 @@ function appendElmentsTo (appendTo, listOfElements) {
 function makeCard (cardInfo, id) {
   return `<div class="col-xs-6 col-md-3 col-lg-2 bg">
             <div class="card" alt="${id}">
-                <h2 class="customfont">${cardInfo.name}</h2>
+                <h2 class="coolvetica">${cardInfo.name}</h2>
                 <img width="140" height="140" src="${cardInfo.picture}" />
                 <hr>
                 <br>
@@ -31,12 +31,12 @@ function makeCard (cardInfo, id) {
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="atack">
-                            <h2 class="bold">A ${cardInfo.atack}</h2>
+                            <h2 class="coolvetica">A ${cardInfo.atack}</h2>
                         </div>
                     </div>
                     <div class="col-xs-6">
                         <div class="defence">
-                            <h2 class="bold">D ${cardInfo.defence}</h2>
+                            <h2 class="coolvetica">D ${cardInfo.defence}</h2>
                         </div>
                     </div>
                 </div>
