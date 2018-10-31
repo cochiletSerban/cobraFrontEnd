@@ -144,7 +144,7 @@ button:hover {
 
 @font-face {
     font-family: myFirstFont;
-    src: url(../assets/coolvetica.ttf);
+    src: url(coolvetica.woff);
 }
 
 h.coolvetica {
