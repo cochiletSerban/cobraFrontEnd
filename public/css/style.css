@@ -147,6 +147,6 @@ button:hover {
     src: url(coolvetica.woff);
 }
 
-h.coolvetica {
+.coolvetica {
     font-family: myFirstFont;
 }
