@@ -54,9 +54,13 @@ function makeCards () {
   return cards
 }
 
+function removeOldElemtsOf (element) {
+  element.empty(element)
+}
+
 function renderCardSelector (domElemets) {
   let appendTo = domElemets.cardSelector.cards
-  console.log(appendTo)
+  removeOldElemtsOf(appendTo)
   appendElmentsTo(appendTo, makeCards(cardList))
 }
 
@@ -84,12 +88,14 @@ function showElement (element) {
   element.show()
 }
 
-function moveToCardSelection (domElemets) {
-  showElement(domElemets.showCardSelectorButton)
-  domElemets.showCardSelectorButton.click(() => {
-    hideElement(domElemets.lobby)
-    showElement(domElemets.cardSelector.cardSelector)
-  })
+function transformLobbyIntoCardSlector (domElemets) {
+  hideElement(domElemets.lobby)
+  showElement(domElemets.cardSelector.cardSelector)
+}
+
+function transformCardSlectorIntoLobby (domElemets) {
+  hideElement(domElemets.cardSelector.cardSelector)
+  showElement(domElemets.lobby)
 }
 
 function toggleSubmitCardsButton (domElemets, toggle) {
@@ -100,7 +106,6 @@ function toggleSubmitCardsButton (domElemets, toggle) {
     domElemets.cardSelector.headerText.text('Select your cards')
     domElemets.cardSelector.header.removeClass('card-click')
   }
-
 }
 
 function selectCards (domElemets) {
@@ -116,17 +121,40 @@ function selectCards (domElemets) {
   })
 }
 
-function sendCardsToServer (domElemets, socket) {
+function sendCardsToServer (domElemets, socket, numberOfCards) {
+  console.log(numberOfCards);
+  
   domElemets.cardSelector.header.click(function () {
-    if (selectedCards.length == 11) {
-      alert('good')
-      socket.emit('cardSelect', selectedCards)
-    } else if (selectedCards.length > 11) {
+    if (selectedCards.length == numberOfCards) {
+      socket.emit('selectedCards', selectedCards)
+    } else if (selectedCards.length > numberOfCards) {
       alert('you selected to many cards')
-    } else {
+    } else if (selectedCards.length < numberOfCards){
       alert('you didnt select enugh cards')
     }
   })
+}
+
+function getStageText (stageNumber) {
+  switch (stageNumber) {
+    case 1: return 'select 11 cards'
+    case 2: return 'select 5 cards'
+    case 3: return 'select 1 card'
+  }
+}
+
+function displayStartGame (domElemets) {
+  hideElement(domElemets.spinner)
+  domElemets.welcomeText.text('All the players are now in the room')
+  showElement(domElemets.showCardSelectorButton)
+  domElemets.showCardSelectorButton.click(() => {
+    getCards()
+    transformLobbyIntoCardSlector(domElemets)
+  })
+}
+
+function getCards () {
+  socket.emit('getCards')
 }
 
 $(document).ready(() => {
@@ -138,18 +166,52 @@ $(document).ready(() => {
     console.log(myId)
   })
 
-  socket.on('disconnect', () => {
+  socket.on('lobbyFull', () => {
     alert('to many players')
   })
 
-  socket.on('lobbyFull', (cards) => {
-    cardList = cards
+  socket.on('reciveCards', (stage) => {
+    selectedCards = []
+    console.log('got cards')
+    cardList = stage.randomCards
     renderCardSelector(domElemets)
-    hideElement(domElemets.spinner)
-    domElemets.welcomeText.text('All the players are now in the room')
-    moveToCardSelection(domElemets)
     selectCards(domElemets)
-    sendCardsToServer(domElemets, socket)
+    console.log(stage.stageNumber)
+    
+    sendCardsToServer(domElemets, socket, stage.stageNumber)
   })
 
+  socket.on('serverGotCards', (stage) => {
+    alert(getStageText(stage))
+    getCards()
+  })
+
+  socket.on('waitForPlayersToSelect', () => {
+    transformCardSlectorIntoLobby(domElemets)
+  })
+
+  // socket.on('stageOneCards', (stageOneCards) => {
+  //   console.log('yolo')
+  //   cardList = stageOneCards
+  //   transformLobbyIntoCardSlector(domElemets)
+  //   renderCardSelector(domElemets)
+  //   selectCards(domElemets)
+  //   sendCardsToServer(domElemets, socket, 11)
+  // })
+
+  // socket.on('stageTwoCards', (stageTwoCards) => {
+  //   console.log('moving to stage 2')
+  //   cardList = stageTwoCards
+  //   renderCardSelector(domElemets)
+  //   selectCards(domElemets)
+  //   sendCardsToServer(domElemets, socket, 5)
+  // })
+
+  socket.on('rageQuit', () => {
+    alert('the other player left the game, refresh the page to start a new game')
+  })
+
+
+
+  socket.on('startGame', () => displayStartGame(domElemets))
 })
