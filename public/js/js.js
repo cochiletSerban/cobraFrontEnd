@@ -96,11 +96,14 @@ function transformLobbyIntoCardSlector (domElemets) {
 function transformCardSlectorIntoLobby (domElemets) {
   hideElement(domElemets.cardSelector.cardSelector)
   showElement(domElemets.lobby)
+  showElement(domElemets.spinner)
+  hideElement(domElemets.showCardSelectorButton)
+  domElemets.welcomeText.text('waiting for the other player to select his cards')
 }
 
 function toggleSubmitCardsButton (domElemets, toggle) {
   if (toggle) {
-    domElemets.cardSelector.headerText.text('Submit your choise')
+    domElemets.cardSelector.headerText.text('Submit your chiox')
     domElemets.cardSelector.header.addClass('card-click')
   } else {
     domElemets.cardSelector.headerText.text('Select your cards')
@@ -122,14 +125,14 @@ function selectCards (domElemets) {
 }
 
 function sendCardsToServer (domElemets, socket, numberOfCards) {
-  console.log(numberOfCards);
-  
   domElemets.cardSelector.header.click(function () {
-    if (selectedCards.length == numberOfCards) {
+    console.log('length ' + selectedCards.length)
+    if (selectedCards.length === numberOfCards) {
       socket.emit('selectedCards', selectedCards)
+      domElemets.cardSelector.header.unbind('click')
     } else if (selectedCards.length > numberOfCards) {
       alert('you selected to many cards')
-    } else if (selectedCards.length < numberOfCards){
+    } else if (selectedCards.length < numberOfCards) {
       alert('you didnt select enugh cards')
     }
   })
@@ -150,6 +153,7 @@ function displayStartGame (domElemets) {
   domElemets.showCardSelectorButton.click(() => {
     getCards()
     transformLobbyIntoCardSlector(domElemets)
+    alert('select 11 card')
   })
 }
 
@@ -172,13 +176,13 @@ $(document).ready(() => {
 
   socket.on('reciveCards', (stage) => {
     selectedCards = []
+    cardList = []
     console.log('got cards')
     cardList = stage.randomCards
     renderCardSelector(domElemets)
     selectCards(domElemets)
-    console.log(stage.stageNumber)
-    
     sendCardsToServer(domElemets, socket, stage.stageNumber)
+    console.log(stage.stageNumber)
   })
 
   socket.on('serverGotCards', (stage) => {
@@ -188,6 +192,12 @@ $(document).ready(() => {
 
   socket.on('waitForPlayersToSelect', () => {
     transformCardSlectorIntoLobby(domElemets)
+  })
+
+  socket.on('renderBoard', (cardsInHand) => {
+    alert("rendering bord")
+    console.log(cardsInHand);
+    
   })
 
   // socket.on('stageOneCards', (stageOneCards) => {
@@ -210,8 +220,6 @@ $(document).ready(() => {
   socket.on('rageQuit', () => {
     alert('the other player left the game, refresh the page to start a new game')
   })
-
-
 
   socket.on('startGame', () => displayStartGame(domElemets))
 })
