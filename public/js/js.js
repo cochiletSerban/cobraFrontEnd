@@ -1,9 +1,9 @@
 // make socket connection to geroku backend used for poduction ( when pushing to master)
 // comment this line for local development ( if you are runnig the back end locally )
-// var socket = io.connect('https://cobras.herokuapp.com/')
+ var socket = io.connect('https://cobras.herokuapp.com/')
 
 // used for local development , uncommetn for local dev
-const socket = io.connect('http://localhost:3000/')
+//const socket = io.connect('http://localhost:3000/')
 var selectedCards = []
 var cardList = []
 let myId = ''
@@ -11,32 +11,32 @@ let myId = ''
 /// card Functions
 function makeCard (cardInfo, id) {
   return `<div class="col-xs-6 col-md-3 col-lg-2 bg">
-              <div class="card" alt="${id}">
-                  <h2 class="coolvetica">${cardInfo.name}</h2>
-                  <img width="140" height="140" src="${cardInfo.picture}" />
-                  <hr>
-                  <br>
-                  <div class="row">
-                      <div class="col-xs-6">
-                          <h3><img width="52" height="31" src="${cardInfo.nationality}" /></h3>
-                      </div>
-                      <div class="col-xs-6">
-                          <h3><img width="31" height="31" src="${cardInfo.team}" /></h3>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-xs-6">
-                          <div class="atack">
-                              <h2 class="coolvetica">A ${cardInfo.atack}</h2>
-                          </div>
-                      </div>
-                      <div class="col-xs-6">
-                          <div class="defence">
-                              <h2 class="coolvetica">D ${cardInfo.defence}</h2>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+            <div class="card" alt="${id}">
+                <h2 class="coolvetica">${cardInfo.name}</h2>
+                <img width="140" height="140" src="${cardInfo.picture}" />
+                <hr>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h3><img width="52" height="31" src="${cardInfo.nationality}" /></h3>
+                    </div>
+                    <div class="col-xs-6">
+                        <h3><img width="31" height="31" src="${cardInfo.team}" /></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="atack">
+                            <h2 class="coolvetica">A ${cardInfo.atack}</h2>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="defence">
+                            <h2 class="coolvetica">D ${cardInfo.defence}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>`
 }
 
@@ -118,7 +118,7 @@ function transformCardSlectorIntoLobby (domElemets) {
 
 function toggleSubmitCardsButton (domElemets, toggle) {
   if (toggle) {
-    domElemets.cardSelector.headerText.text('Submit your chiox')
+    domElemets.cardSelector.headerText.text('Submit your choice')
     domElemets.cardSelector.header.addClass('card-click')
   } else {
     domElemets.cardSelector.headerText.text('Select your cards')
@@ -157,8 +157,8 @@ function sendCardsToServer (domElemets, socket, numberOfCards) {
       toggleSubmitCardsButton(domElemets, false)
     } else if (selectedCards.length > numberOfCards) {
       alert('you selected to many cards')
-    } else if (selectedCards.length < numberOfCards) {
-      alert('you didnt select enugh cards')
+    } else {
+      alert('you didnt select enough cards')
     }
   })
 }
