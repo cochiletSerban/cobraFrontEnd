@@ -11,32 +11,32 @@ let myId = ''
 /// card Functions
 function makeCard (cardInfo, id) {
   return `<div class="col-xs-6 col-md-3 col-lg-2 bg">
-            <div class="card" alt="${id}">
-                <h2>${cardInfo.name}</h2>
-                <img width="140" height="140" src="${cardInfo.picture}" />
-                <hr>
-                <br>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <h3>${cardInfo.nationality} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h3>
-                    </div>
-                    <div class="col-xs-6">
-                        <h3>${cardInfo.team}</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="atack">
-                            <h2 class="bold">A ${cardInfo.atack}</h2>
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="defence">
-                            <h2 class="bold">D ${cardInfo.defence}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
+              <div class="card" alt="${id}">
+                  <h2 class="coolvetica">${cardInfo.name}</h2>
+                  <img width="140" height="140" src="${cardInfo.picture}" />
+                  <hr>
+                  <br>
+                  <div class="row">
+                      <div class="col-xs-6">
+                          <h3><img width="52" height="31" src="${cardInfo.nationality}" /></h3>
+                      </div>
+                      <div class="col-xs-6">
+                          <h3><img width="31" height="31" src="${cardInfo.team}" /></h3>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-xs-6">
+                          <div class="atack">
+                              <h2 class="coolvetica">A ${cardInfo.atack}</h2>
+                          </div>
+                      </div>
+                      <div class="col-xs-6">
+                          <div class="defence">
+                              <h2 class="coolvetica">D ${cardInfo.defence}</h2>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </div>`
 }
 
@@ -202,8 +202,9 @@ function cardSelection (socket, domElemets) {
 
 function disconnect (socket) {
   socket.on('rageQuit', () => {
-    alert('the other player left the game, refresh the page to start a new game')
+    alert('the other player left the game')
     socket.disconnect()
+    location.reload()
   })
 }
 
