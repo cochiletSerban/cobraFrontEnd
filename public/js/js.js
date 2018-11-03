@@ -94,7 +94,7 @@ function moveToCardSelection (domElemets) {
 
 function toggleSubmitCardsButton (domElemets, toggle) {
   if (toggle) {
-    domElemets.cardSelector.headerText.text('Submit your choise')
+    domElemets.cardSelector.headerText.text('Submit your choice')
     domElemets.cardSelector.header.addClass('card-click')
   } else {
     domElemets.cardSelector.headerText.text('Select your cards')
@@ -124,7 +124,7 @@ function sendCardsToServer (domElemets, socket) {
     } else if (selectedCards.length > 11) {
       alert('you selected to many cards')
     } else {
-      alert('you didnt select enugh cards')
+      alert('you didnt select enough cards')
     }
   })
 }
@@ -139,7 +139,7 @@ $(document).ready(() => {
   })
 
   socket.on('disconnect', () => {
-    alert('to many players')
+    alert('too many players')
   })
 
   socket.on('lobbyFull', (cards) => {
