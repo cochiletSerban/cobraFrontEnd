@@ -7,12 +7,8 @@ const socket = io.connect('http://localhost:3000/')
 var selectedCards = []
 var cardList = []
 let myId = ''
-function appendElmentsTo (appendTo, listOfElements) {
-  for (let elem of listOfElements) {
-    $(appendTo).append(elem)
-  }
-}
 
+/// card Functions
 function makeCard (cardInfo, id) {
   return `<div class="col-xs-6 col-md-3 col-lg-2 bg">
             <div class="card" alt="${id}">
@@ -44,7 +40,7 @@ function makeCard (cardInfo, id) {
           </div>`
 }
 
-function makeCards () {
+function makeCards (cardList) {
   let cards = []
   let id = 0
   for (let card of cardList) {
@@ -54,16 +50,7 @@ function makeCards () {
   return cards
 }
 
-function removeOldElemtsOf (element) {
-  element.empty(element)
-}
-
-function renderCardSelector (domElemets) {
-  let appendTo = domElemets.cardSelector.cards
-  removeOldElemtsOf(appendTo)
-  appendElmentsTo(appendTo, makeCards(cardList))
-}
-
+// uitls
 function getDomElements () {
   let elements = {
     welcomeText: $('#lobby > h3'),
@@ -84,8 +71,36 @@ function getDomElements () {
 function hideElement (element) {
   element.hide()
 }
+
 function showElement (element) {
   element.show()
+}
+
+function appendElmentsTo (appendTo, listOfElements) {
+  for (let elem of listOfElements) {
+    $(appendTo).append(elem)
+  }
+}
+
+function removeOldElemtsOf (element) {
+  element.empty(element)
+}
+
+// lobby functions
+function displayStartGame (domElemets, socket) {
+  hideElement(domElemets.spinner)
+  domElemets.welcomeText.text('All the players are now in the room')
+  showElement(domElemets.showCardSelectorButton)
+  domElemets.showCardSelectorButton.click(() => {
+    getCards(socket)
+    transformLobbyIntoCardSlector(domElemets)
+  })
+}
+
+function renderCardSelector (domElemets) {
+  let appendTo = domElemets.cardSelector.cards
+  removeOldElemtsOf(appendTo)
+  appendElmentsTo(appendTo, makeCards(cardList))
 }
 
 function transformLobbyIntoCardSlector (domElemets) {
@@ -111,6 +126,15 @@ function toggleSubmitCardsButton (domElemets, toggle) {
   }
 }
 
+function getStageText (cardList) {
+  switch (cardList.length) {
+    case 24: return 'select 11 cards'
+    case 10: return 'select 5 cards'
+    case 3: return 'select 1 card'
+  }
+}
+
+// conncetion functions
 function selectCards (domElemets) {
   $('.card').click(function () {
     if (!selectedCards.includes(cardList[$(this).attr('alt')])) {
@@ -139,40 +163,12 @@ function sendCardsToServer (domElemets, socket, numberOfCards) {
   })
 }
 
-function getStageText (cardList) {
-  switch (cardList.length) {
-    case 24: return 'select 11 cards'
-    case 10: return 'select 5 cards'
-    case 3: return 'select 1 card'
-  }
-}
-
-function displayStartGame (domElemets) {
-  hideElement(domElemets.spinner)
-  domElemets.welcomeText.text('All the players are now in the room')
-  showElement(domElemets.showCardSelectorButton)
-  domElemets.showCardSelectorButton.click(() => {
-    getCards()
-    transformLobbyIntoCardSlector(domElemets)
-  })
-}
-
-function getCards () {
+function getCards (socket) {
   socket.emit('getCards')
 }
 
-$(document).ready(() => {
-  let domElemets = getDomElements()
-
-  socket.on('connect', () => {
-    console.log('connected')
-    myId = socket.io.engine.id
-    console.log(myId)
-  })
-
-  socket.on('lobbyFull', () => {
-    alert('to many players')
-  })
+function cardSelection (socket, domElemets) {
+  socket.on('startGame', () => displayStartGame(domElemets, socket))
 
   socket.on('reciveCards', (stage) => {
     selectedCards = []
@@ -181,14 +177,13 @@ $(document).ready(() => {
     cardList = stage.randomCards
     alert(getStageText(cardList))
     renderCardSelector(domElemets)
-  
     selectCards(domElemets)
     sendCardsToServer(domElemets, socket, stage.stageNumber)
     console.log(stage.stageNumber)
   })
 
   socket.on('serverGotCards', (stage) => {
-    getCards()
+    getCards(socket)
   })
 
   socket.on('waitForPlayersToSelect', () => {
@@ -198,30 +193,31 @@ $(document).ready(() => {
   socket.on('renderBoard', (cardsInHand) => {
     alert("rendering bord")
     console.log(cardsInHand);
-    
   })
 
-  // socket.on('stageOneCards', (stageOneCards) => {
-  //   console.log('yolo')
-  //   cardList = stageOneCards
-  //   transformLobbyIntoCardSlector(domElemets)
-  //   renderCardSelector(domElemets)
-  //   selectCards(domElemets)
-  //   sendCardsToServer(domElemets, socket, 11)
-  // })
+  socket.on('lobbyFull', () => {
+    alert('to many players')
+  })
+}
 
-  // socket.on('stageTwoCards', (stageTwoCards) => {
-  //   console.log('moving to stage 2')
-  //   cardList = stageTwoCards
-  //   renderCardSelector(domElemets)
-  //   selectCards(domElemets)
-  //   sendCardsToServer(domElemets, socket, 5)
-  // })
-
+function disconnect (socket) {
   socket.on('rageQuit', () => {
     alert('the other player left the game, refresh the page to start a new game')
     socket.disconnect()
   })
+}
 
-  socket.on('startGame', () => displayStartGame(domElemets))
+function prepareGame (socket) {
+  socket.on('connect', () => {
+    console.log('connected')
+    myId = socket.io.engine.id
+    console.log(myId)
+  })
+  return getDomElements()
+}
+
+$(document).ready(() => {
+  let domElemets = prepareGame(socket)
+  cardSelection(socket, domElemets)
+  disconnect(socket)
 })
