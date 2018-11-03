@@ -2,6 +2,7 @@
 // uitls
 function getDomElements () {
   let elements = {
+    wh: $(window).height(),
     welcomeText: $('#lobby > h3'),
     showCardSelectorButton: $('#showCardSelector'),
     cardSelector: {
@@ -12,7 +13,12 @@ function getDomElements () {
     },
     lobby: $('#lobby'),
     spinner: $('#spinner'),
-    anyCard: $('.card')
+    anyCard: $('.card'),
+    board:$('#board'),
+    boardCard:$('.boardCard'),
+    hiddenBoardCardComp:$('.hideMe'),
+    bottomPart: $('#bottomPart'),
+    
   }
   return elements
 }

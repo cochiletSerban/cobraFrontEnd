@@ -21,7 +21,19 @@ function transformLobbyIntoCardSlector (domElemets) {
 }
 
 function transformLobbyIntoBoard(domElemets) {
+ //$(window).on('resize', function windowHeight = $(window).height();)
   hideElement(domElemets.lobby)
+  showElement(domElemets.board)
+  domElemets.boardCard.mouseenter(function () {
+    $(this).find('.hideMe').slideToggle("fast")
+    if(domElemets.bottomPart.height() > 50) {
+      domElemets.topPart.height(domElemets.ws / 3)
+    }
+  })
+  domElemets.boardCard.mouseleave(function () {
+    hideElement($(this).find('.hideMe'))
+  })
+
 }
 
 function transformCardSlectorIntoLobby (domElemets) {
