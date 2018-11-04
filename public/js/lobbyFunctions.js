@@ -22,7 +22,7 @@ function transformLobbyIntoCardSlector (domElemets) {
 
 
 function bindOnHover(domElemets) {
-  domElemets.cardOnBoard.mouseenter(function () {
+  domElemets.boardCard.mouseenter(function () {
     $(this).find('.hideMe').slideToggle("fast")
     //console.log(domElemets.wh);
     //console.log(domElemets.bottomPart.height());

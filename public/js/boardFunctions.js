@@ -1,3 +1,7 @@
+function endRound () {
+  confirm('end round?')
+}
+
 function renderBoard (socket, domElemets) {
   let card
   let board = {
@@ -5,11 +9,12 @@ function renderBoard (socket, domElemets) {
     mid: [],
     last: []
   }
+
   socket.on('renderBoard', (cardsInHand) => {
     transformLobbyIntoBoard(domElemets)
     let hand = domElemets.hand
     let lider = cardsInHand.pop()
-    console.log(lider);
+    //console.log(lider);
     
     appendElmentsTo(hand, makeBoardCards(cardsInHand))
     domElemets.myLider.append(`<div class="boardCard" alt="${myId}">
@@ -27,7 +32,8 @@ function renderBoard (socket, domElemets) {
 </div>
 </div>`)
 
-    $(".clickMe").click(function (cardsInHand) {
+
+    $(".clickMe").click(function () {
       ///console.log('asdf');
       card = $(this)
       card.addClass("card-click")
@@ -35,8 +41,8 @@ function renderBoard (socket, domElemets) {
       domElemets.mid.addClass("card-click")
       domElemets.last.addClass("card-click")
 
-      domElemets.last.click(function (cardsInHand) {
-        console.log(card + 'pe row');
+      domElemets.last.click(function () {
+        //console.log(card + 'pe row');
         card.find('.hideMe').addClass('hideMe').removeClass('hideMe2')
         card.addClass('bindMe')
         $(this).append(card)
@@ -47,12 +53,15 @@ function renderBoard (socket, domElemets) {
         domElemets.mid.removeClass("card-click")
         domElemets.last.removeClass("card-click")
         board.last.push(cardsInHand[$(card).attr('alt')])
-        console.log(board.last);
+        //console.log(board.last);
+        console.log(cardsInHand[$(card).attr('alt')]);
+        
+        //console.log(cardsInHand[$(card).attr('alt')]);
         
       })
 
       domElemets.last.click(function () {
-        console.log(card + 'pe rows');
+       // console.log(card + 'pe rows');
         $(this).append(card)
         card.removeClass('card-click')
         domElemets.first.removeClass("card-click")
@@ -61,7 +70,7 @@ function renderBoard (socket, domElemets) {
       })
 
       domElemets.mid.click(function () {
-        console.log(card + 'pe row');
+        //console.log(card + 'pe row');
         $(this).append(card)
         card.removeClass('card-click')
         domElemets.first.removeClass("card-click")
@@ -70,7 +79,7 @@ function renderBoard (socket, domElemets) {
       })
 
       domElemets.first.click(function () {
-        console.log(card + 'pe row');
+       // console.log(card + 'pe row');
         $(this).append(card)
         card.removeClass('card-click')
         domElemets.first.removeClass("card-click")
