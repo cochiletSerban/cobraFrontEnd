@@ -18,7 +18,17 @@ function getDomElements () {
     boardCard:$('.boardCard'),
     hiddenBoardCardComp:$('.hideMe'),
     bottomPart: $('#bottomPart'),
-    
+    topPart: $('#topPart'),
+    hand:$('#hand'),
+    first:$('#first'),
+    mid:$('#mid'),
+    last:$('#last'),
+    handCard:$('.clickMe'),
+    pl2Lider:$('#pl2lider'),
+    myLider:$('#myLider'),
+    pl2Scor:$('#pl2Scor'),
+    myScor:$('#myScor'),
+    cardOnBoard:$(".bindMe")
   }
   return elements
 }

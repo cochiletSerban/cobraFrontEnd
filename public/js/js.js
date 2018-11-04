@@ -8,16 +8,21 @@ const socket = io.connect('http://localhost:3000/')
 // inits
 let selectedCards = [], cardList = [], myId = ''
 
-function renderBoard(socket, domElemets) {
-  socket.on('renderBoard', (cardsInHand) => {
-    console.log(cardsInHand)
-    transformLobbyIntoBoard(domElemets)
-  })
+function populateBoard(socket, domElemets) {
+  socket.emit('getBoard')
+  // socket.on('populateBoard', (players) => {
+  //   console.log('yolo');
+  //   console.log(players[myId].cardsInHand)
+  //   let hand = domElemets.hand
+  //   //removeOldElemtsOf(hand)
+  //   //appendElmentsTo(hand, makeBoardCards(players[myId].cardsInHand))
+  // })
 }
 
 $(document).ready(() => {
   let domElemets = prepareGame(socket)
   cardSelection(socket, domElemets)
   renderBoard(socket, domElemets)
+ // populateBoard(socket, domElemets)
   disconnect(socket)
 })

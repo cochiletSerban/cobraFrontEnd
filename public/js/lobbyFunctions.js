@@ -20,19 +20,32 @@ function transformLobbyIntoCardSlector (domElemets) {
   showElement(domElemets.cardSelector.cardSelector)
 }
 
+
+function bindOnHover(domElemets) {
+  domElemets.cardOnBoard.mouseenter(function () {
+    $(this).find('.hideMe').slideToggle("fast")
+    //console.log(domElemets.wh);
+    //console.log(domElemets.bottomPart.height());
+    // if(domElemets.bottomPart.height() > domElemets.wh/2) {
+    //   console.log(domElemets.wh);
+    //   domElemets.topPart.height(domElemets.wh/2)
+    // }
+  })
+  domElemets.cardOnBoard.mouseleave(function () {
+    hideElement($(this).find('.hideMe'))
+    // if(domElemets.topPart.height() > 40) {
+    //   domElemets.topPart.height(40)
+    // }
+  })
+}
+
+
 function transformLobbyIntoBoard(domElemets) {
  //$(window).on('resize', function windowHeight = $(window).height();)
   hideElement(domElemets.lobby)
   showElement(domElemets.board)
-  domElemets.boardCard.mouseenter(function () {
-    $(this).find('.hideMe').slideToggle("fast")
-    if(domElemets.bottomPart.height() > 50) {
-      domElemets.topPart.height(domElemets.ws / 3)
-    }
-  })
-  domElemets.boardCard.mouseleave(function () {
-    hideElement($(this).find('.hideMe'))
-  })
+  domElemets.hand.css('display', 'flex')
+  bindOnHover(domElemets)
 
 }
 

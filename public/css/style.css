@@ -160,24 +160,23 @@ button:hover {
 .boardComponent{
     width: 100%;
     overflow: hidden;
-    padding: 20px;
+
 }
 
 #bottomPart {
-    border:2px solid red;
+    /* border-top:2px solid red; */
+
 }
 
 #topPart {
-    border:2px solid white;
+    /* border-bottom:2px solid white; */
+    /* height: 25vh; */
 }
-
 
 
 
 .boardCard {
     padding-top:5px;
-    margin-right:5px;
-    margin-bottom:15px;
     background-color:rgba(0,0,0, 0.4);
     border-radius: 5%;
     min-width: 140px;
@@ -187,11 +186,18 @@ button:hover {
     text-align: center;
     padding-left:5%;
     padding-right:5%;
-    min-height: 100px;
+    min-height: 80px;
+
+    flex: 0 0 auto;
 }
 
-.boardCard > h2 {
-    margin:10px;
+.container {
+    min-height: calc(100vh - 135px);
+}
+
+#board > hr {
+    min-height: 10px;
+    width: 100%;
 }
 
 .boardCard > img {
@@ -203,6 +209,9 @@ button:hover {
     display: none;
 }
 
+.hideMe2 {
+    display: none;
+}
 
  .boardCard:hover {
     opacity: 1;
@@ -211,9 +220,48 @@ button:hover {
 
 }
 
+#hand {
+    min-height: 105px;
+    border:2px solid white;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: none;
+}
 
+.lines {
 
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-bottom:3px;
+    border-radius: 18px;
+    background-color: rgba(0,0,0, 0.2);
+    width:100%;
+    min-height: 85px;
+}
 
+#board > hr {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+#scor {
+    border:2px solid black;
+    padding:5px;
+    min-height: 50px;
+    text-align: center;
+}
+
+#scor >.row >.col-xs-3 {
+    border-right:2px solid black;
+    border-left:2px solid black;
+}
 
 /* .boardCard > .row {
     margin-bottom: 12px;
