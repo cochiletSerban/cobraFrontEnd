@@ -7,6 +7,12 @@ var socket = io.connect('https://cobras.herokuapp.com/')
 
 // inits
 let selectedCards = [], cardList = [], myId = ''
+let initScor = 0
+let board = {
+  first: [],
+  mid: [],
+  last: []
+}
 
 function populateBoard(socket, domElemets) {
   socket.emit('getBoard')
@@ -24,5 +30,38 @@ $(document).ready(() => {
   cardSelection(socket, domElemets)
   renderBoard(socket, domElemets)
  // populateBoard(socket, domElemets)
+  socket.on('boardChanged', (stuff) => {
+    let scor = stuff.initScor
+    let board = stuff.board
+    domElemets.pl2Scor.text(scor)
+    console.log(scor);
+    
+    if(board.first.length > 0) {
+      removeOldElemtsOf($("#topPart > #firstt"))
+      appendElmentsTo($("#topPart > #firstt"),makeBoardCards(board.first))
+    }
+    if(board.mid.length > 0) {
+      removeOldElemtsOf($("#topPart > #midt"))
+      appendElmentsTo($("#topPart > #midt"),makeBoardCards(board.mid))
+    }
+    if(board.last.length > 0) {
+      removeOldElemtsOf($("#topPart > #lastt"))
+      appendElmentsTo($("#topPart > #lastt"),makeBoardCards(board.last))
+    }
+
+  })
+  socket.on('endRound',() => {
+    $("#myScor").text(0)
+    $("#pl2Scor").text(0)
+    $("#bottomPart > .row").empty()
+    $("#topPart > .row").empty()
+    board.first = []
+    board.mid = []
+    board.last = []
+  })
+
+  socket.on('won' ,() => {
+alert('you won this  round')
+  })
   disconnect(socket)
 })
