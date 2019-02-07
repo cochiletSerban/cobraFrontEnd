@@ -1,7 +1,7 @@
 ### <img src="cobra.png" alt="bonus" width="20"/> Cobra game Front End <img src="cobra.png" alt="bonus" width="20"/>
 
   - Cel mai jmecher card game
-  - production version is avaible at [cobra.tk](https:cobra.tk)
+  - production version is avaible at [cobra.tk](https://cobra.tk)
 
 ### How to run the app locally
 - comment the third line in the js.js file:
